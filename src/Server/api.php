@@ -7,12 +7,13 @@
 	
 	// Errors:
 	$error = array();
-	$error["missing_state"] = '{"result": "false", "error": {"id": "0", "message": "Missing state parameter"}}';
-	$error["misformatted_state"] = '{"result": "false", "error": {"id": "1", "message": "Misformatted state"}}';
-	$error["missing_input"] = '{"result": "false", "error": {"id": "2", "message": "Missing input in state"}}';
-	$error["bad_database"] = '{"result": "false", "error": {"id": "3", "message": "Internal database error"}}';
-	$error["invalid_application"] = '{"result": "false", "error": {"id": "4", "message": "Invalid application. Make sure your ID and secret token is correct"}}';
-	$error["key_exists"] = '{"result": "false", "error": {"id": "5", "message": "Product key already exists"}}';
+	$error["missing_state"] = '{"result": "error", "error": {"id": "0", "message": "Missing state parameter"}}';
+	$error["misformatted_state"] = '{"result": "error", "error": {"id": "1", "message": "Misformatted state"}}';
+	$error["missing_input"] = '{"result": "error", "error": {"id": "2", "message": "Missing input in state"}}';
+	$error["bad_database"] = '{"result": "error", "error": {"id": "3", "message": "Internal database error"}}';
+	$error["invalid_application"] = '{"result": "error", "error": {"id": "4", "message": "Invalid application. Make sure your ID and secret token is correct and that your application is enabled"}}';
+	$error["key_exists"] = '{"result": "error", "error": {"id": "5", "message": "Product key already exists"}}';
+	$error["misformatted_result"] = '{"result": "error", "error": {"id": "6", "message": "Misformatted result"}}';
 	
 	$raw_state = $_GET["state"];
 
@@ -69,7 +70,7 @@
 				$result = mysqli_fetch_assoc(mysqli_query($mysqli, $sql));
 				
 				if(!$result){
-					echo $error["bad_database"];
+					echo $error["invalid_application"];
 				}
 				
 				if($result["valid"] == true){
