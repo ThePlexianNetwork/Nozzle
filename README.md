@@ -1,8 +1,10 @@
 # Nozzle
 
 [![Stories in Ready](https://badge.waffle.io/ThePlexianNetwork/Nozzle.png?label=ready&title=Ready)](http://waffle.io/ThePlexianNetwork/Nozzle)
-[![Build - Release](https://travis-ci.org/ThePlexianNetwork/Nozzle.svg?branch=release)](https://travis-ci.org/ThePlexianNetwork/Nozzle)
-[![Build - Beta](https://travis-ci.org/ThePlexianNetwork/Nozzle.svg?branch=beta)](https://travis-ci.org/ThePlexianNetwork/Nozzle)
+
+Release: [![Build - Release](https://travis-ci.org/ThePlexianNetwork/Nozzle.svg?branch=release)](https://travis-ci.org/ThePlexianNetwork/Nozzle)
+
+Beta: [![Build - Beta](https://travis-ci.org/ThePlexianNetwork/Nozzle.svg?branch=beta)](https://travis-ci.org/ThePlexianNetwork/Nozzle)
 
 Nozzle is a cross-platform, cross-language, implementation of the Plexian Distribution API. Simple add the library to your project and get cracking!
 
