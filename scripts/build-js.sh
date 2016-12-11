@@ -1,5 +1,5 @@
 #!/bin/bash
-mkdir -p Build/js/
+mkdir -p build/js/
 
 babel --presets es2015 Client/js/scripts/org/plexian/Nozzle/Client/Nozzle.js -o Build/js/Nozzle.bundle.js
 
