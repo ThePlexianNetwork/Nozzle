@@ -3,9 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * You may obtain a copy of the License in the LICENSE.md file.
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,22 +43,22 @@ class APIConnectionManager {
 	 *
 	 * @return True if so, false if not.
 	 */
-	useAsync(){
-	  return this.useAsync;
-	}
+  useAsync(){
+    return this.useAsync;
+  }
 	
 	/**
 	 * Set if we should use asnychronous requests or not
 	 *
 	 * @param val The boolean value to set useAsync to.
 	 */
-	setUseAsync(val){
-	  if(val){
-	    this.useAsync = true;
-	  }else{
-	    this.useAsync = false;
-	  }
-	}
+  setUseAsync(val){
+    if(val){
+      this.useAsync = true;
+    }else{
+      this.useAsync = false;
+    }
+  }
 	
   /**
    * Initialize the connection to the far-API
@@ -70,7 +68,15 @@ class APIConnectionManager {
    * @return The response if using synchronous requests or null if using asynchronous
    */
   validateProductKey(productKey, callback){
-    let stateURL = this.apiURL + "?state=" + JSON.stringify({request: "validate_product_key", input: productKey});
+    let stateURL = this.apiURL + "?state=" + JSON.stringify(
+      {
+        request: "validate_product_key",
+        input: {
+          "key": productKey,
+          application: this.applicationID
+        }
+      }
+    );
     
     // If there is no product key given then simply
     if(!productKey){
@@ -83,6 +89,7 @@ class APIConnectionManager {
     }
     
     let request = new XMLHttpRequest();
+    var text;
     
     // If we are using asynchronous requests we need to use callbacks.
     if(this.useAsync()){
@@ -91,7 +98,7 @@ class APIConnectionManager {
         // If the request is fully complete
         if(request.readyState == 4 && request.status == 200){
           // Parse the string returned (see api.php for more information) into a Javascript object
-          let text = JSON.parse(request.responseText);
+          text = JSON.parse(request.responseText);
           
           // If there was some formatting error in the response return a MisformattedResult error.
           if(!text){
@@ -108,16 +115,12 @@ class APIConnectionManager {
     }
     // If we aren't then we need to just return the response.
     else{
-      var text;
-      
       request.onreadystatechange = function(){
         if(request.readyState == 4 && request.status == 200){
           text = JSON.parse(request.responseText);
           
           if(!text){
-            return {result: "error", error: {id: "6", message: "Misformatted result"}};
-          }else{
-            return text;
+            text = {result: "error", error: {id: "6", message: "Misformatted result"}};
           }
         }
       };
@@ -126,6 +129,8 @@ class APIConnectionManager {
     // Open the connection then send it.
     request.open("GET", stateURL, this.useAsync());
     request.send();
+    
+    return text;
   }
   
   /**
@@ -136,7 +141,16 @@ class APIConnectionManager {
    * @return The response if using synchronous requests or null if using asynchronous
    */
   addProductKey(productKey, callback){
-    let stateURL = this.apiURL + "?state=" + JSON.stringify({request: "add_application_key", input: {application: this.applicationID, application_authorization: this.applicationToken, new_key: productKey}});
+    let stateURL = this.apiURL + "?state=" + JSON.stringify(
+      {
+        request: "add_application_key",
+        input: {
+          application: this.applicationID,
+          application_authorization: this.applicationToken,
+          new_key: productKey
+        }
+      }
+    );
   
     if(!productKey){
       if(this.useAsync()){
@@ -148,11 +162,12 @@ class APIConnectionManager {
     }
     
     let request = new XMLHttpRequest();
+    var text;
     
     if(this.useAsync()){
       request.onreadystatechange = function(){
         if(request.readyState == 4 && request.status == 200){
-          let text = JSON.parse(request.responseText);
+          text = JSON.parse(request.responseText);
           
           if(!text){
             callback({result: "error", error: {id: "6", message: "Misformatted result"}});
@@ -164,16 +179,12 @@ class APIConnectionManager {
         }
       };
     }else{
-      var text;
-      
       request.onreadystatechange = function(){
         if(request.readyState == 4 && request.status == 200){
           text = JSON.parse(request.responseText);
           
           if(!text){
-            return {result: "error", error: {id: "6", message: "Misformatted result"}};
-          }else{
-            return text;
+            text = {result: "error", error: {id: "6", message: "Misformatted result"}};
           }
         }
       };
@@ -181,5 +192,68 @@ class APIConnectionManager {
     
     request.open("GET", stateURL, this.useAsync());
     request.send();
+    
+    return text;
+  }
+  
+  deleteProductKey(productKey, callback){
+    let stateURL = this.apiURL + "?state=" + JSON.stringify(
+      {
+        request: "remove_product_key",
+        input: {
+          application: this.applicationID,
+          application_authorization: this.applicationToken,
+          key: productKey
+        }
+      }
+    );
+    
+    if(!productKey){
+      if(this.useAsync()){
+        callback({result: "error", error: {id: "0", message: "Missing state parameter"}});
+        return;
+      }else{
+        return {result: "error", error: {id: "0", message: "Missing state parameter"}};
+      }
+    }
+    
+    let request = new XMLHttpRequest();
+    var text;
+    
+    if(this.useAsync()){
+      request.onreadystatechange = function(){
+        if(request.readyState == 4 && request.status == 200){
+          text = JSON.parse(request.responseText);
+          
+          if(!text){
+            callback({result: "error", error: {id: "6", message: "Misformatted result"}});
+            return;
+          }else{
+            callback(text);
+          }
+        }
+      };
+    }else{
+      request.onreadystatechange = function(){
+        if(request.readyState == 4 && request.status == 200){
+          text = JSON.parse(request.responseText);
+          
+          if(!text){
+            text = {result: "error", error: {id: "6", message: "Misformatted result"}};
+          }
+        }
+      };
+    }
+    
+    request.open("GET", stateURL, this.useAsync());
+    request.send();
+    return text;
+  }
+  
+  disableProductKey(productKey, callback){
+  }
+  
+  enableProductKey(productKey, callback){
+    // TODO: implement here and in server.
   }
 }
