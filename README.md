@@ -15,6 +15,6 @@ Nozzle is a cross-platform, cross-language, implementation of the Plexian Distri
 1. Clone this repository, then ```cd``` into it.
 2. Type ```npm install``` to install dependencies (if this doesn't work Nozzle depends on babel for es2015 and uglifyjs)
 3. Do you want a development version of the code (with comments & expanded) or a minified version?
-  a. __Development__ Type ```npm run build-js-dev```
-  b. __Minified__ Type ```npm run build-js```
+  * __Development__ Type ```npm run build-js-dev```
+  * __Minified__ Type ```npm run build-js```
 4. Build is in the ```Build/js``` directory in the ```Nozzle.js``` file
