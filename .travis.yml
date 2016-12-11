@@ -1,7 +1,5 @@
 sudo: required
 language: node_js
-node_js:
-  - "3.10.10"
 before_install:
   - "npm install"
   - "npm install -g --save-dev babel-cli"
