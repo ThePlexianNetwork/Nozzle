@@ -4,8 +4,8 @@
   "description": "The official API for interacting with the Plexian Distribution system.",
   "main": "index.js",
   "scripts": {
-    "build-js": "./Scripts/build-js.sh",
-    "build-js-dev": "./Scripts/build-js-dev.sh",
+    "build-js": "./scripts/build-js.sh",
+    "build-js-dev": "./scripts/build-js-dev.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
